@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APDK Supply Chain Policy Review Form</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root {
+    --navy: #1a2e52;
+    --blue: #2755a3;
+    --accent: #e8a020;
+    --light-blue: #eef3fc;
+    --border: #c8d6f0;
+    --text: #1e2a3a;
+    --muted: #6b7a92;
+    --white: #ffffff;
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --success: #2a7a4b;
+    --radius: 12px;
+    --shadow: 0 2px 16px rgba(39,85,163,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER BANNER */
+  .banner {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    color: white;
+    padding: 40px 24px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .banner::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.10);
+  }
+  .banner-inner { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+  .banner-tag {
+    display: inline-block;
+    background: rgba(232,160,32,0.25);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(232,160,32,0.4);
+  }
+  .banner h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    line-height: 1.25;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .banner p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .banner-meta {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .banner-meta span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .banner-meta span::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--navy);
+    padding: 0 24px 14px;
+  }
+  .progress-inner { max-width: 780px; margin: 0 auto; }
+  .progress-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), #f0c040);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* MAIN CONTENT */
+  .main { max-width: 780px; margin: 0 auto; padding: 28px 16px 0; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(200,214,240,0.6);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 24px rgba(39,85,163,0.13); }
+
+  /* INSTRUCTION CARD */
+  .instruction-card {
+    background: linear-gradient(135deg, #eef3fc 0%, #f8f3e8 100%);
+    border-left: 4px solid var(--accent);
+    padding: 22px 26px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .instruction-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+  .instruction-card p { font-size: 13.5px; color: var(--text); line-height: 1.7; margin-bottom: 8px; }
+  .instruction-card .example {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--blue);
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 4px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--light-blue);
+  }
+  .section-num {
+    background: var(--blue);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    color: var(--navy);
+  }
+
+  /* FORM LABEL */
+  .q-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .q-label .required { color: #c0392b; margin-left: 3px; }
+  .q-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .q-block { margin-bottom: 26px; }
+
+  /* INPUTS */
+  textarea, input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #fafcff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  textarea:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(39,85,163,0.10);
+    background: #fff;
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  /* RADIO / CHECKBOX */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    background: #fafcff;
+  }
+  .option:hover { background: var(--light-blue); border-color: var(--blue); }
+  .option input { accent-color: var(--blue); margin-top: 2px; flex-shrink: 0; }
+  .option span { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .option.selected { background: var(--light-blue); border-color: var(--blue); }
+
+  /* CLAUSE CARD */
+  .clause-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .clause-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .clause-ref {
+    background: rgba(255,255,255,0.2);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .clause-title { font-size: 14px; font-weight: 500; flex: 1; }
+  .clause-toggle {
+    font-size: 18px;
+    font-weight: 300;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .clause-header.open .clause-toggle { transform: rotate(45deg); }
+  .clause-summary {
+    background: #f7f9fe;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    font-size: 12.5px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .clause-body {
+    padding: 20px;
+    display: none;
+  }
+  .clause-body.open { display: block; }
+
+  /* RATING STARS */
+  .stars { display: flex; gap: 6px; }
+  .star {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.15s, transform 0.1s;
+  }
+  .star:hover, .star.active { color: var(--accent); transform: scale(1.15); }
+
+  /* SUBMIT BUTTON */
+  .submit-area {
+    text-align: center;
+    padding: 20px 0 10px;
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white;
+    border: none;
+    padding: 15px 48px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 18px rgba(39,85,163,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(39,85,163,0.38);
+  }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0 24px;
+  }
+
+  /* POLICY SECTION TABS */
+  .policy-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .policy-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    background: white;
+    transition: all 0.15s;
+  }
+  .policy-tab.active, .policy-tab:hover {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+  }
+
+  /* 2-COLUMN GRID */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } .card { padding: 20px 18px; } }
+
+  /* STAFF DETAILS */
+  .staff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .staff-grid { grid-template-columns: 1fr; } }
+
+  /* NUMBERED INPUT */
+  .numbered-input {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .num-badge {
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 10px;
+  }
+  .numbered-input input { flex: 1; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--success);
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-inner">
+    <div class="banner-tag">Policy Review 2025</div>
+    <h1>Supply Chain Management Policy<br>Staff Review & Feedback Form</h1>
+    <p>Association for the Physically Disabled of Kenya (APDK) — All Branches & Departments</p>
+    <div class="banner-meta">
+      <span>April 2021 Policy Edition</span>
+      <span>For All Staff</span>
+      <span>Confidential Submission</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-label" id="progressLabel">Section 0 of 7 completed</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INSTRUCTIONS -->
+  <div class="instruction-card">
+    <h3>📋 Purpose & Instructions</h3>
+    <p>This form is to be completed by <strong>ALL staff</strong> across all APDK branches and departments. Your honest feedback will directly inform the revision of the Supply Chain Management Policy.</p>
+    <p><strong>How to indicate corrections:</strong> Under each clause, number your suggested changes as (1), (2), (3). You may leave clauses blank if you have no input for that section.</p>
+    <div class="example">
+      Example: Clause 2.1 needs to be corrected to (1) include e-procurement options, (2) clarify approval authority levels, (3) update the KES 10,000 threshold to reflect current market rates.
+    </div>
+  </div>
+
+  <!-- SECTION A: STAFF DETAILS -->
+  <div class="card" id="secA">
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <h2>Staff Details</h2>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin:10px 0 20px;">Your name is optional. All responses will be treated with confidentiality.</p>
+    <div class="staff-grid">
+      <div class="q-block">
+        <div class="q-label">Full Name <span style="color:var(--muted);font-weight:400;">(optional)</span></div>
+        <input type="text" placeholder="Enter your name">
+      </div>
+      <div class="q-block">
+        <div class="q-label">Department <span class="required">*</span></div>
+        <input type="text" placeholder="e.g. Finance, Stores, Procurement">
+      </div>
+      <div class="q-block">
+        <div class="q-label">Branch <span class="required">*</span></div>
+        <select>
+          <option value="">-- Select branch --</option>
+          <option>National Office (Nairobi)</option>
+          <option>Coast Branch</option>
+          <option>Nakuru</option>
+          <option>Machakos</option>
+          <option>Kisumu</option>
+          <option>Kisii</option>
+          <option>Embu</option>
+          <option>Eldoret</option>
+          <option>Busia</option>
+          <option>Siaya</option>
+        </select>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Job Title <span class="required">*</span></div>
+        <input type="text" placeholder="Your current position">
+      </div>
+      <div class="q-block">
+        <div class="q-label">Years at APDK</div>
+        <select>
+          <option value="">-- Select --</option>
+          <option>Less than 1 year</option>
+          <option>1 – 3 years</option>
+          <option>3 – 5 years</option>
+          <option>5 – 10 years</option>
+          <option>More than 10 years</option>
+        </select>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Date Completed <span class="required">*</span></div>
+        <input type="date">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION B: OVERALL ASSESSMENT -->
+  <div class="card" id="secB">
+    <div class="section-header">
+      <div class="section-num">B</div>
+      <h2>Overall Policy Assessment</h2>
+    </div>
+    <div style="height:16px"></div>
+
+    <div class="q-block">
+      <div class="q-label">1. How familiar are you with the current Supply Chain Management Policy? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="familiarity"><span>Very familiar — I reference and use it regularly</span></label>
+        <label class="option"><input type="radio" name="familiarity"><span>Somewhat familiar — I have read through it</span></label>
+        <label class="option"><input type="radio" name="familiarity"><span>Slightly familiar — I have heard of it but not studied it</span></label>
+        <label class="option"><input type="radio" name="familiarity"><span>Not familiar — this is my first time reviewing it</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">2. Overall, how would you rate the current policy? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="overall_rating"><span>Excellent — comprehensive, clear and easy to follow</span></label>
+        <label class="option"><input type="radio" name="overall_rating"><span>Good — mostly adequate with minor gaps</span></label>
+        <label class="option"><input type="radio" name="overall_rating"><span>Fair — needs significant improvement in several areas</span></label>
+        <label class="option"><input type="radio" name="overall_rating"><span>Poor — requires a complete overhaul</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">3. What are the TOP 3 areas of the policy most urgently needing updating? <span class="required">*</span></div>
+      <div class="q-hint">Number each point: (1) first priority, (2) second priority, (3) third priority</div>
+      <div class="numbered-input"><div class="num-badge">1</div><input type="text" placeholder="Most urgent area for revision..."></div>
+      <div class="numbered-input"><div class="num-badge">2</div><input type="text" placeholder="Second most urgent area..."></div>
+      <div class="numbered-input"><div class="num-badge">3</div><input type="text" placeholder="Third most urgent area..."></div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">4. Are there new topics NOT currently in the policy that should be added?</div>
+      <div class="q-hint">e.g. e-procurement, digital tools, data protection, environmental purchasing, etc.</div>
+      <textarea placeholder="Describe any new topics or areas you would like included in the policy..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">5. Which clauses do you find most difficult to implement or understand in practice?</div>
+      <textarea placeholder="List clause numbers and briefly explain the difficulty..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION C: CLAUSE-BY-CLAUSE -->
+  <div class="card" id="secC">
+    <div class="section-header">
+      <div class="section-num">C</div>
+      <h2>Clause-by-Clause Review</h2>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin:10px 0 18px;">Click on any clause to expand it and provide your feedback. You may skip clauses that are not relevant to your role.</p>
+
+    <!-- POLICY SECTION FILTER TABS -->
+    <div class="policy-tabs">
+      <div class="policy-tab active" onclick="filterClauses('all', this)">All Sections</div>
+      <div class="policy-tab" onclick="filterClauses('sec1', this)">Section I – Intro</div>
+      <div class="policy-tab" onclick="filterClauses('sec2', this)">Section II – Planning</div>
+      <div class="policy-tab" onclick="filterClauses('sec3', this)">Section III – Procedure</div>
+      <div class="policy-tab" onclick="filterClauses('sec4', this)">Section IV – General Rules</div>
+      <div class="policy-tab" onclick="filterClauses('sec5', this)">Section V – Methodology</div>
+      <div class="policy-tab" onclick="filterClauses('sec6', this)">Section VI – Stores</div>
+      <div class="policy-tab" onclick="filterClauses('sec7', this)">Section VII – Disposal</div>
+    </div>
+
+    <div id="clauseContainer">
+
+<!-- SECTION I -->
+<div class="clause-group" data-section="sec1">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:8px 0 6px;">Section I — Introduction</div>
+
+<!-- Macro for each clause: ref, title, summary -->
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">1.1</div><div class="clause-title">Background & Organizational Overview</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Describes APDK's history since 1958, its 10 branches, programs for PWD and the rationale for this procurement manual.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 1.1 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c1.1"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c1.1"><span>No changes needed</span></label><label class="option"><input type="radio" name="c1.1"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 1.1 (number each: 1, 2, 3...)</div><textarea placeholder="e.g. (1) Update branch list to include new branches, (2) Revise programme descriptions to reflect current activities..."></textarea></div><div class="q-block"><div class="q-label">New ideas / additions for Clause 1.1</div><textarea placeholder="Any additions you propose for this clause..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">1.2</div><div class="clause-title">Availability of this Policy</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Management through procurement shall ensure this policy is accessible to all APDK branches and departments.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 1.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c1.2"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c1.2"><span>No changes needed</span></label><label class="option"><input type="radio" name="c1.2"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 1.2</div><textarea placeholder="e.g. (1) Include digital/online access to the policy, (2) Specify frequency of policy orientation for new staff..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 1.2</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">1.3</div><div class="clause-title">Scope of the Policy</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Covers all APDK procurement, supply chain, contract, inventory and disposal management.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 1.3 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c1.3"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c1.3"><span>No changes needed</span></label><label class="option"><input type="radio" name="c1.3"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 1.3</div><textarea placeholder="e.g. (1) Include digital procurement scope, (2) Address donor-funded project scope separately..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 1.3</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">1.4 – 1.5</div><div class="clause-title">Purpose & Objectives of Procurement</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">To establish procedures for procurement, inventory and disposal; ensure value for money and guide procurement decisions.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 1.4–1.5 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c1.45"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c1.45"><span>No changes needed</span></label><label class="option"><input type="radio" name="c1.45"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">1.6 – 1.11</div><div class="clause-title">Mission, Policy Relationships & Procurement Mission</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">APDK's mission for PWD; relationship of this policy with other APDK manuals, the Procurement Act, PBO Act, donor funds, children protection policy, and the procurement department's mission.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 1.6–1.11 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c1.611"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c1.611"><span>No changes needed</span></label><label class="option"><input type="radio" name="c1.611"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify clause number e.g. 1.7: ...)</div><textarea placeholder="e.g. (1) 1.8: Update reference to 2015 Act to reflect any 2024 amendments, (2) 1.11: Add reference to data protection in procurement..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec1">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">2.0</div><div class="clause-title">Eligibility</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">All qualified firms/individuals encouraged; conditions limited to capability; consulting firms disqualified from related supply contracts.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 2.0 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c2.0"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c2.0"><span>No changes needed</span></label><label class="option"><input type="radio" name="c2.0"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec1 -->
+
+<!-- SECTION II -->
+<div class="clause-group" data-section="sec2">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section II — Policies and Planning</div>
+
+<div class="clause-card" data-section="sec2">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">2.1</div><div class="clause-title">Procurement Policy</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Obtain all supplies at the lowest cost meeting specifications; consider supplier capability, diversity, donor and environmental factors; competitive bids from prequalified suppliers.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 2.1 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c2.1"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c2.1"><span>No changes needed</span></label><label class="option"><input type="radio" name="c2.1"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 2.1 (e.g. Clause 2.1 needs to be corrected to: (1)..., (2)..., (3)...)</div><textarea placeholder="e.g. (1) Include value-for-money beyond lowest cost, (2) Define 'right quality' with measurable criteria, (3) Integrate e-procurement policy..."></textarea></div><div class="q-block"><div class="q-label">Suggested revised wording for Clause 2.1</div><textarea placeholder="If you have specific wording to propose, write it here..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec2">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">2.2</div><div class="clause-title">Provisioning Policy</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Determine advance requirements using Bill of Materials (BOM); user departments generate quantities forwarded to stores and procurement for sourcing.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 2.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c2.2"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c2.2"><span>No changes needed</span></label><label class="option"><input type="radio" name="c2.2"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 2.2</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 2.2</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec2">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">2.3</div><div class="clause-title">Procurement Planning</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Annual procurement plans prepared as part of budgetary process; all procurements within approved budgets; 30% reserved for women, youth, PWD and disadvantaged groups.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 2.3 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c2.3"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c2.3"><span>No changes needed</span></label><label class="option"><input type="radio" name="c2.3"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 2.3</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 2.3</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec2">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">2.3 (Authority)</div><div class="clause-title">Authority for Procurement</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Delegated to procurement function; centralized purchasing; contracts only binding if authorised by Executive/National Director and witnessed by Head of Procurement.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does this clause need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c2.3a"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c2.3a"><span>No changes needed</span></label><label class="option"><input type="radio" name="c2.3a"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec2 -->
+
+<!-- SECTION III -->
+<div class="clause-group" data-section="sec3">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section III — Procurement Procedure Overview</div>
+
+<div class="clause-card" data-section="sec3">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">3.1 – 3.2</div><div class="clause-title">Recognition of Need & Request for Quotation</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Users identify needs; storekeeper checks stock; if unavailable, procurement sends RFQ; procurements over KES 3M require open tendering.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 3.1–3.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c3.12"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c3.12"><span>No changes needed</span></label><label class="option"><input type="radio" name="c3.12"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify 3.1 or 3.2)</div><textarea placeholder="e.g. (1) 3.1: Add digital requisition process, (2) 3.2: Update the KES 3M threshold..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec3">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">3.3 – 3.4</div><div class="clause-title">Evaluation of Quotations & Ordering Stage</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Quotations compared on price; LPO raised in triplicate, signed by raiser, checker, verifier and approver; cancelled if delivery not made within lead time.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 3.3–3.4 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c3.34"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c3.34"><span>No changes needed</span></label><label class="option"><input type="radio" name="c3.34"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec3">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">3.5 – 3.8</div><div class="clause-title">Expediting, Receipt, Payment & Ownership</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Proactive expediting with 3-day lead time for consumables; goods inspected against LPO; procurement endorses invoice for payment; all materials belong to APDK.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 3.5–3.8 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c3.58"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c3.58"><span>No changes needed</span></label><label class="option"><input type="radio" name="c3.58"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify clause)</div><textarea placeholder="e.g. (1) 3.5: Review the 3-day lead time standard — too short for some items, (2) 3.7: Clarify payment terms and escalation process..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec3 -->
+
+<!-- SECTION IV (grouped) -->
+<div class="clause-group" data-section="sec4">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section IV — General Procurement Rules</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.1 – 4.2</div><div class="clause-title">Choice of Procedure & Small Purchases</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Open tendering for purchases above KES 3M; small purchase threshold KES 10,000 for informal procurement from supermarkets/hardware.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.1–4.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.12"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.12"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.12"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clauses 4.1–4.2</div><textarea placeholder="e.g. (1) 4.2: KES 10,000 threshold too low — needs to be revised upward to reflect inflation, (2) 4.1: Add criteria for framework agreements..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.3.1 – 4.3.4</div><div class="clause-title">Code of Ethics (Corruption, Collusion, Conflict of Interest, Confidentiality)</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Prohibits corrupt practices, collusion, undisclosed conflicts of interest and breach of confidentiality; debarment for violations.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.3.1–4.3.4 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.3"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.3"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.3"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify sub-clause)</div><textarea placeholder="e.g. (1) 4.3.2: Strengthen whistleblower protection, (2) 4.3.3: Clarify 'relative' definition in conflict-of-interest clause..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.4 – 4.5</div><div class="clause-title">Threshold Matrix & Procurement Committees</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Decisions made within threshold matrix; evaluation committee (3–5 members), inspection & acceptance committee, and disposal committee all operate on ad hoc basis.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.4–4.5 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.45"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.45"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.45"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="e.g. (1) Threshold matrix values need updating to 2025 figures, (2) Formalise committee meeting minutes and reporting requirements..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.8.1 – 4.9</div><div class="clause-title">Pre-qualification of Contractors & Tender Document Preparation</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Prequalification every 3 years; mandatory criteria include registration, KRA compliance, audited accounts, experience, financial resources, child protection policy adherence.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.8–4.9 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.89"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.89"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.89"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.10 – 4.21</div><div class="clause-title">Tender Document Contents, Submission, Opening & Confidentiality</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Contents of tender document; costs of tendering; invitation; fees; clarifications; amendments; sealing; deadline; modification/withdrawal; submission & opening; post-opening confidentiality.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.10–4.21 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.1021"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.1021"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.1021"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify clause number)</div><textarea placeholder="e.g. (1) 4.12: Add requirement for online/electronic submission, (2) 4.20: Define what constitutes 50% quorum more precisely..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.22 – 4.24</div><div class="clause-title">Evaluation of Bids, Criteria & Benchmark Table</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Evaluation within 30 days; preliminary and technical/financial evaluation; 30% reserved for disadvantaged groups; benchmark scoring table (total 100 marks).</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.22–4.24 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.2224"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.2224"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.2224"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in the evaluation criteria / benchmark table</div><textarea placeholder="e.g. (1) Review weighting of child protection score (currently 10), (2) Add environmental compliance criterion, (3) Clarify financial information scoring..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.25 – 4.31</div><div class="clause-title">Termination, Award, Notification, Contracts, Amendments, Records</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">APDK may terminate proceedings; award to lowest evaluated responsive tenderer; contracts signed within 14 days of notification; records kept 6 years minimum.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.25–4.31 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.2531"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.2531"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.2531"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify clause number)</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec4">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">4.37 – 4.39</div><div class="clause-title">Surplus Property & Green Purchasing</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Surplus property managed centrally through procurement/stores; internal recirculation first; Green Purchasing programme preference for environmentally friendly suppliers.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 4.37–4.39 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c4.3739"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c4.3739"><span>No changes needed</span></label><label class="option"><input type="radio" name="c4.3739"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="e.g. (1) 4.39: Elevate green purchasing from 'future desire' to active policy commitment with specific criteria..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec4 -->
+
+<!-- SECTION V -->
+<div class="clause-group" data-section="sec5">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section V — Procurement Methodology</div>
+
+<div class="clause-card" data-section="sec5">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">5.1 – 5.2.2</div><div class="clause-title">Classification of Purchases, Cash Purchases & Open Tendering</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Purchases classified as Capital or Consumable; cash purchases up to KES 10,000; open tendering is the default method for all other procurement.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 5.1–5.2.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c5.122"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c5.122"><span>No changes needed</span></label><label class="option"><input type="radio" name="c5.122"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec5">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">5.2.3 – 5.2.11</div><div class="clause-title">Alternative Procurement Methods</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Two-stage tendering, restricted bidding, design competition, single sourcing, competitive bidding, proposals/EOI, force account, electronic reverse auction, framework agreement.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 5.2.3–5.2.11 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c5.2311"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c5.2311"><span>No changes needed</span></label><label class="option"><input type="radio" name="c5.2311"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct (specify sub-clause e.g. 5.2.10)</div><textarea placeholder="e.g. (1) 5.2.10: Electronic reverse auction needs clearer implementation guidelines, (2) 5.2.11: Framework agreement thresholds need defining..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec5">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">5.3 – 5.7</div><div class="clause-title">International Tendering, Shipment Storage & Conditions</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">International tenders in national newspaper; minimum 30-day period; prequalified clearing agent; user department involvement in special orders; staff priority in disposals.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 5.3–5.7 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c5.37"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c5.37"><span>No changes needed</span></label><label class="option"><input type="radio" name="c5.37"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec5 -->
+
+<!-- SECTION VI -->
+<div class="clause-group" data-section="sec6">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section VI — Stores Procedures</div>
+
+<div class="clause-card" data-section="sec6">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">6.1 – 6.2</div><div class="clause-title">Re-ordering Stock & Ordering Non-Stock Items</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">IPR raised when stock reaches reorder level; non-stock items requested in writing with justification; finance verifies funds; all goods accepted only with valid LPO or receipt.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 6.1–6.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c6.12"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c6.12"><span>No changes needed</span></label><label class="option"><input type="radio" name="c6.12"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec6">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">6.3 – 6.4</div><div class="clause-title">Receiving Goods & Rejection of Stores</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">HoD verifies quantity/quality in presence of accounts; GRN raised immediately; documents to accounts within 24 hours; rejected goods returned immediately with written reasons.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 6.3–6.4 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c6.34"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c6.34"><span>No changes needed</span></label><label class="option"><input type="radio" name="c6.34"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec6">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">6.5 – 6.6</div><div class="clause-title">Stores Cycle & Internal Sale/Dispatch</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Complete stores cycle from IPR to storage; issuing hours up to 2:30 PM; stock cards and Sage updated daily; SOP process for appliance sales.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 6.5–6.6 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c6.56"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c6.56"><span>No changes needed</span></label><label class="option"><input type="radio" name="c6.56"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec6">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">6.7.1 – 6.7.2</div><div class="clause-title">Local & International Deliveries</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Invoice, delivery note and packing list must accompany all deliveries; no goods leave without valid documents; gate copy of delivery note required; international: driver signs packing list before release.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do Clauses 6.7.1–6.7.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c6.712"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c6.712"><span>No changes needed</span></label><label class="option"><input type="radio" name="c6.712"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec6">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">6.8 – 6.9 & 7.10</div><div class="clause-title">Stock Taking, Stock Losses & Stock Reports</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Quarterly stock take; physical count reconciled with system; losses due to damage, redundancy or obsolescence handled per procedure; monthly stock report by the 5th.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Do these clauses need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c6.89"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c6.89"><span>No changes needed</span></label><label class="option"><input type="radio" name="c6.89"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct</div><textarea placeholder="e.g. (1) 6.8: Consider more frequent spot-checks in addition to quarterly stock take, (2) 7.10: Monthly report should go to more departments..."></textarea></div><div class="q-block"><div class="q-label">New ideas</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec6 -->
+
+<!-- SECTION VII -->
+<div class="clause-group" data-section="sec7">
+<div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Section VII — Disposal of Stores and Equipment</div>
+
+<div class="clause-card" data-section="sec7">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">7.1</div><div class="clause-title">Disposal Committee</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Ad hoc committee constituted to recommend best disposal method; meets within 14 days of referral; reports using a disposal certificate.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 7.1 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c7.1"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c7.1"><span>No changes needed</span></label><label class="option"><input type="radio" name="c7.1"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 7.1</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 7.1</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec7">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">7.2</div><div class="clause-title">Disposal Procedure</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Every employee notifies disposal committee via procurement; committee recommends: transfer, sale by tender/auction, destruction, donation, or trade-in; accounting officer accepts or rejects in writing.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 7.2 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c7.2"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c7.2"><span>No changes needed</span></label><label class="option"><input type="radio" name="c7.2"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 7.2</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 7.2</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+
+<div class="clause-card" data-section="sec7">
+  <div class="clause-header" onclick="toggleClause(this)"><div class="clause-ref">7.3</div><div class="clause-title">Restriction on Disposal to Employees</div><div class="clause-toggle">+</div></div>
+  <div class="clause-summary">Disposals to employees must be expressly allowed by disposal committee and management; staff who set reserve prices cannot tender for the same item.</div>
+  <div class="clause-body"><div class="q-block"><div class="q-label">Does Clause 7.3 need to be revised?</div><div class="options"><label class="option"><input type="radio" name="c7.3"><span>Yes, changes are needed</span></label><label class="option"><input type="radio" name="c7.3"><span>No changes needed</span></label><label class="option"><input type="radio" name="c7.3"><span>Needs complete rewrite</span></label></div></div><div class="q-block"><div class="q-label">Points to correct in Clause 7.3</div><textarea placeholder="Number each point (1), (2), (3)..."></textarea></div><div class="q-block"><div class="q-label">New ideas for Clause 7.3</div><textarea placeholder="Your suggestions..."></textarea></div></div>
+</div>
+</div><!-- end sec7 -->
+
+    </div><!-- end clauseContainer -->
+  </div>
+
+  <!-- SECTION D: NEW IDEAS -->
+  <div class="card" id="secD">
+    <div class="section-header">
+      <div class="section-num">D</div>
+      <h2>New Ideas & Broader Recommendations</h2>
+    </div>
+    <div style="height:16px"></div>
+
+    <div class="q-block">
+      <div class="q-label">1. What new procurement topics or trends should the revised policy address?</div>
+      <div class="q-hint">e.g. e-procurement portals, digital record keeping, data protection, climate-smart procurement, mobile approvals</div>
+      <textarea placeholder="Your ideas here..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">2. What daily challenges do you face in procurement/supply chain that the policy does not currently address?</div>
+      <textarea placeholder="Describe specific situations or gaps you have encountered..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">3. What best practices from other organisations would you recommend APDK adopt?</div>
+      <textarea placeholder="Share practices you have seen work well elsewhere..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">4. Are any policy thresholds (financial limits) outdated and in need of updating?</div>
+      <div class="q-hint">e.g. KES 10,000 small purchases threshold, KES 3M open tender threshold</div>
+      <div class="options">
+        <label class="option"><input type="checkbox"><span>Yes — the KES 10,000 small purchase threshold needs to be increased</span></label>
+        <label class="option"><input type="checkbox"><span>Yes — the KES 3,000,000 open tendering threshold needs to be revised</span></label>
+        <label class="option"><input type="checkbox"><span>Other thresholds need updating (specify in comments below)</span></label>
+        <label class="option"><input type="checkbox"><span>No — all thresholds are still appropriate</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">5. Any other comments, concerns or recommendations</div>
+      <textarea style="min-height:110px;" placeholder="Any additional thoughts on the policy revision..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION E: DECLARATION -->
+  <div class="card" id="secE">
+    <div class="section-header">
+      <div class="section-num">E</div>
+      <h2>Declaration</h2>
+    </div>
+    <p style="font-size:13.5px;color:var(--text);line-height:1.7;margin:14px 0 20px;">I confirm that the information I have provided in this form is accurate and reflects my genuine views on the Supply Chain Management Policy. I understand that my input will be used to improve the policy for the benefit of APDK and all its stakeholders.</p>
+
+    <div class="q-block">
+      <div class="q-label">Signature (type your name as signature) <span class="required">*</span></div>
+      <input type="text" placeholder="Type your full name to sign">
+    </div>
+    <div class="q-block">
+      <div class="q-label">I agree that my responses may be shared (anonymously) with the policy review committee <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="consent"><span>Yes, I agree</span></label>
+        <label class="option"><input type="radio" name="consent"><span>No, keep my responses confidential</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <button class="btn-submit" onclick="submitForm()">Submit Review Form</button>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;">Please submit this form to the Procurement Department by the indicated deadline.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="toast" id="toast">✓ Form submitted! Thank you for your contribution.</div>
+
+<script>
+function toggleClause(header) {
+  header.classList.toggle('open');
+  const body = header.parentElement.querySelector('.clause-body');
+  body.classList.toggle('open');
+  updateProgress();
+}
+
+function filterClauses(section, tab) {
+  document.querySelectorAll('.policy-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.clause-card').forEach(card => {
+    if (section === 'all' || card.dataset.section === section) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.clause-group').forEach(g => {
+    if (section === 'all' || g.dataset.section === section) {
+      g.style.display = '';
+    } else {
+      g.style.display = 'none';
+    }
+  });
+}
+
+function updateProgress() {
+  const sections = ['secA','secB','secC','secD','secE'];
+  let completed = 0;
+  if (document.querySelector('#secA input[type="text"]').value) completed++;
+  if (document.querySelector('#secB input[type="radio"]:checked')) completed++;
+  if (document.querySelector('#secC .clause-body.open')) completed++;
+  if (document.querySelector('#secD textarea').value) completed++;
+  if (document.querySelector('#secE input[type="text"]').value) completed++;
+  const pct = Math.round((completed / 7) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Section ${completed} of 7 completed`;
+}
+
+document.querySelectorAll('input, textarea, select').forEach(el => {
+  el.addEventListener('change', updateProgress);
+  el.addEventListener('input', updateProgress);
+});
+
+async function submitForm() {
+  // ── Collect all form data ──────────────────────────────────────
+  const data = {};
+
+  // Helper: get value of first checked radio in a group
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.parentElement.querySelector('span').textContent.trim() : '(not answered)';
+  }
+
+  // Section A – Staff Details
+  const allInputs = document.querySelectorAll('input[type="text"], input[type="date"], select, textarea');
+  const labels = document.querySelectorAll('.q-label');
+
+  // Named fields
+  data['Full Name']      = document.querySelector('#secA input[placeholder="Enter your name"]')?.value || '';
+  data['Department']     = document.querySelectorAll('#secA select')[0]?.value || '';
+  data['Branch']         = document.querySelectorAll('#secA select')[1]?.value || '';
+  data['Job Title']      = document.querySelector('#secA input[placeholder="Your current position"]')?.value || '';
+  data['Years at APDK']  = document.querySelectorAll('#secA select')[2]?.value || '';
+  data['Date Completed'] = document.querySelector('#secA input[type="date"]')?.value || '';
+
+  // Section B
+  data['B1 – Policy Familiarity']         = getRadio('familiarity');
+  data['B2 – Overall Policy Rating']      = getRadio('overall_rating');
+  const secBTextareas = document.querySelectorAll('#secB textarea');
+  data['B3 – Top 3 Areas to Update']      = secBTextareas[0]?.value || '';
+  data['B4 – New Topics to Add']          = secBTextareas[1]?.value || '';
+  data['B5 – Difficult Clauses']          = secBTextareas[2]?.value || '';
+
+  // Section C – all clause radios and textareas
+  const clauseGroups = [
+    {radio:'c1.1',  label:'Clause 1.1 – Background'},
+    {radio:'c1.2',  label:'Clause 1.2 – Availability'},
+    {radio:'c1.3',  label:'Clause 1.3 – Scope'},
+    {radio:'c1.45', label:'Clauses 1.4–1.5 – Purpose & Objectives'},
+    {radio:'c1.611',label:'Clauses 1.6–1.11 – Mission & Relationships'},
+    {radio:'c2.0',  label:'Clause 2.0 – Eligibility'},
+    {radio:'c2.1',  label:'Clause 2.1 – Procurement Policy'},
+    {radio:'c2.2',  label:'Clause 2.2 – Provisioning Policy'},
+    {radio:'c2.3',  label:'Clause 2.3 – Procurement Planning'},
+    {radio:'c2.3a', label:'Clause 2.3 – Authority for Procurement'},
+    {radio:'c3.12', label:'Clauses 3.1–3.2 – Recognition of Need & RFQ'},
+    {radio:'c3.34', label:'Clauses 3.3–3.4 – Evaluation & Ordering'},
+    {radio:'c3.58', label:'Clauses 3.5–3.8 – Expediting, Receipt, Payment'},
+    {radio:'c4.12', label:'Clauses 4.1–4.2 – Choice of Procedure & Small Purchases'},
+    {radio:'c4.3',  label:'Clauses 4.3.1–4.3.4 – Code of Ethics'},
+    {radio:'c4.45', label:'Clauses 4.4–4.5 – Threshold Matrix & Committees'},
+    {radio:'c4.89', label:'Clauses 4.8–4.9 – Pre-qualification & Tender Docs'},
+    {radio:'c4.1021',label:'Clauses 4.10–4.21 – Tender Submission & Opening'},
+    {radio:'c4.2224',label:'Clauses 4.22–4.24 – Evaluation Criteria & Benchmark'},
+    {radio:'c4.2531',label:'Clauses 4.25–4.31 – Award, Contracts & Records'},
+    {radio:'c4.3739',label:'Clauses 4.37–4.39 – Surplus Property & Green Purchasing'},
+    {radio:'c5.122', label:'Clauses 5.1–5.2.2 – Classification & Cash Purchases'},
+    {radio:'c5.2311',label:'Clauses 5.2.3–5.2.11 – Alternative Procurement Methods'},
+    {radio:'c5.37',  label:'Clauses 5.3–5.7 – International Tendering & Conditions'},
+    {radio:'c6.12',  label:'Clauses 6.1–6.2 – Re-ordering & Non-Stock Items'},
+    {radio:'c6.34',  label:'Clauses 6.3–6.4 – Receiving & Rejection of Goods'},
+    {radio:'c6.56',  label:'Clauses 6.5–6.6 – Stores Cycle & Internal Dispatch'},
+    {radio:'c6.712', label:'Clauses 6.7.1–6.7.2 – Local & International Deliveries'},
+    {radio:'c6.89',  label:'Clauses 6.8–6.9 & 7.10 – Stock Taking & Reports'},
+    {radio:'c7.1',   label:'Clause 7.1 – Disposal Committee'},
+    {radio:'c7.2',   label:'Clause 7.2 – Disposal Procedure'},
+    {radio:'c7.3',   label:'Clause 7.3 – Restriction on Disposal to Employees'},
+  ];
+
+  clauseGroups.forEach(g => {
+    data[g.label + ' – Needs Revision?'] = getRadio(g.radio);
+  });
+
+  // Collect all textareas in Section C by their label
+  document.querySelectorAll('#secC .clause-body').forEach(body => {
+    const clauseRef = body.closest('.clause-card').querySelector('.clause-ref').textContent.trim();
+    body.querySelectorAll('.q-block').forEach(block => {
+      const lbl = block.querySelector('.q-label')?.textContent.trim();
+      const ta  = block.querySelector('textarea');
+      if (lbl && ta && ta.value.trim()) {
+        data[`${clauseRef} – ${lbl}`] = ta.value.trim();
+      }
+    });
+  });
+
+  // Section D
+  const secDTextareas = document.querySelectorAll('#secD textarea');
+  data['D1 – New Topics to Address']          = secDTextareas[0]?.value || '';
+  data['D2 – Daily Challenges Not Addressed'] = secDTextareas[1]?.value || '';
+  data['D3 – Best Practices to Adopt']        = secDTextareas[2]?.value || '';
+  const thresholdChecks = document.querySelectorAll('#secD input[type="checkbox"]');
+  const checkedThresholds = Array.from(thresholdChecks)
+    .filter(c => c.checked)
+    .map(c => c.parentElement.querySelector('span').textContent.trim());
+  data['D4 – Outdated Thresholds'] = checkedThresholds.length ? checkedThresholds.join(' | ') : 'None selected';
+  data['D5 – Other Comments'] = secDTextareas[3]?.value || '';
+
+  // Section E
+  data['Signature']  = document.querySelector('#secE input[type="text"]')?.value || '';
+  data['Consent']    = getRadio('consent');
+
+  // ── Validate required fields ───────────────────────────────────
+  if (!data['Branch'] || data['Branch'] === '') {
+    alert('Please select your Branch before submitting.');
+    document.getElementById('secA').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  if (!data['Signature']) {
+    alert('Please type your name in the Signature field (Section E) before submitting.');
+    document.getElementById('secE').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  // ── Build a readable plain-text email body ─────────────────────
+  let emailBody = '=== APDK SUPPLY CHAIN POLICY REVIEW SUBMISSION ===\n\n';
+  for (const [key, value] of Object.entries(data)) {
+    if (value && value !== '(not answered)' && value !== '') {
+      emailBody += `${key}:\n${value}\n\n`;
+    }
+  }
+  emailBody += '=== END OF SUBMISSION ===';
+
+  // ══════════════════════════════════════════════════════════════
+  // EMAILJS CONFIGURATION — PASTE YOUR 3 CODES BELOW
+  // Follow the steps at the bottom of this comment to get them
+  // ══════════════════════════════════════════════════════════════
+  const EMAILJS_PUBLIC_KEY  = 'VhPchEcQ3EKg_5WYD';
+  const EMAILJS_SERVICE_ID  = 'service_gaqcqu2';
+  const EMAILJS_TEMPLATE_ID = 'template_o0xxtak';
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwXXJuPwHev17-XQ822AFZcTGY9tnLTGx8NMVaPkcyeyX9GccdX8YHpgm0MeT26qh2MRg/exec';
+  // ══════════════════════════════════════════════════════════════
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    // ── Send to EmailJS (email notification) ──────────────────
+    await emailjs.init(EMAILJS_PUBLIC_KEY);
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:    data['Branch'] || 'APDK Staff',
+      from_name:   data['Full Name'] || 'APDK Staff',
+      branch:      data['Branch'] || '',
+      department:  data['Department'] || '',
+      job_title:   data['Job Title'] || '',
+      date:        data['Date Completed'] || '',
+      message:     emailBody,
+      subject:     `APDK Policy Review – ${data['Branch'] || 'Staff'}`
+    });
+
+    // ── Send to Google Sheets ──────────────────────────────────
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    btn.textContent = '✓ Submitted Successfully';
+    btn.style.background = 'linear-gradient(135deg,#0F6E56,#2aaa84)';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Form submitted successfully!';
+    const toast = document.getElementById('toast');
+    toast.textContent = '✓ Your response has been recorded. Thank you!';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 6000);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (error) {
+    btn.textContent = 'Submit Review Form';
+    btn.disabled = false;
+    alert('Submission failed. Please check your internet connection and try again.\n\nError: ' + JSON.stringify(error));
+  }
+}
+</script>
+</body>
+</html>
